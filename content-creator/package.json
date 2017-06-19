@@ -1,0 +1,32 @@
+{
+  "name": "content-creator",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "draft-convert": "^1.4.6",
+    "draft-js": "^0.10.1",
+    "draft-js-alignment-plugin": "^2.0.0-beta1",
+    "draft-js-drag-n-drop-plugin": "^2.0.0-beta10",
+    "draft-js-editor": "^1.9.0",
+    "draft-js-export-html": "^0.5.4",
+    "draft-js-focus-plugin": "^2.0.0-beta1",
+    "draft-js-image-plugin": "^2.0.0-rc2",
+    "draft-js-plugins-editor": "^2.0.0-rc2",
+    "draft-js-resizeable-plugin": "^1.0.8",
+    "material-ui": "^0.18.1",
+    "megadraft": "^0.4.26",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-fontawesome": "^1.6.1",
+    "react-tap-event-plugin": "^2.0.1"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

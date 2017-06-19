@@ -1,0 +1,160 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.TilesContainer {
+  display: flex;
+}
+
+.Tile {
+  margin: 10px;
+  max-width: 350px;
+}
+
+.TileMedia img {
+    height: 200px; 
+    width: auto; 
+}
+
+.HtmlEditor {
+  min-width: 500px;
+  min-height: 600px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.Form {
+  margin: 10px;
+}
+
+.Form Input {
+  margin: 10px;
+  min-width: 300px;
+}
+
+.Form Button {
+  margin: 10px 10px 10px 0px;
+}
+
+.Paper {
+  margin: 10px;
+}
+
+.designer-left{
+  float: left;
+  padding-left: 60px;
+  min-width: 360px;
+  min-height: 700px;
+}
+
+.designer-right{
+  min-height: 560px;
+}
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: blue;
+}
+
+.green {
+  color: blue;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.violet {
+  color: violet;
+}
+
+.megadraft {
+  border: 2px solid black;
+  min-height: 400px;
+  width: 320px;
+}
+
+.hidden {
+  display: none;
+}
+
+.contentSchedulerForm {
+
+}
+
+.searchContentPane {
+  max-width: 400px;
+}
+
+.contentPreviewList {
+  list-style: none;
+}
+
+.contentSearchContainer{
+  margin: 10px;
+}
+
+.contentPreviewBox {
+  border: solid 2px grey;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: -30px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.contentPreviewBox:hover{
+  border-radius: 5px;
+  border: solid 2px green;
+  color: green;
+  cursor: pointer;
+}
+
+.beaconSelectionPane {
+
+}
+
+.formBottomBar{
+  padding-left: 5px;
+  padding-bottom: 10px;
+}
+
+.formBottomBar button{
+  margin: 5px;
+}
+
+.selected{
+  border-radius: 5px;
+  border: solid 2px green;
+  color: green;
+  cursor: pointer;
+}
+
+.schedulerTable td{
+  padding: 10px
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
