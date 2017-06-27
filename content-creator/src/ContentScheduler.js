@@ -21,12 +21,14 @@ import HomeComponent from './Home.js'
 const ContentSchedulerComponent = class ContentScheduler extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { loadingState: 0, contentSearchText: '', selectedContentId: 0, selectedBeaconsAndTimes: [], allContent: [], displayedContent: [], beaconsAndAvailability: [] };
+        this.state = { navigationEnabled: false, loadingState: 0, contentSearchText: '', selectedContentId: 0, selectedBeaconsAndTimes: [], allContent: [], displayedContent: [], beaconsAndAvailability: [] };
 
         this.contentSearchTextChanged = this.contentSearchTextChanged.bind(this);
         this.incrementLoadingState = this.incrementLoadingState.bind(this);
         this.revealListItem = this.revealListItem.bind(this);
         this.loadScheduler = this.loadScheduler.bind(this);
+        this.formatDateAsDay = this.formatDateAsDay.bind(this);
+        this.selectCell = this.selectCell.bind(this);
 
         this.getContent();
         this.getBeacons();
@@ -41,29 +43,73 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         var colEnd = "</td>";
 
         var tableString = tableStart;
-        
-        // add headings based on dates
-        
 
+        // add headings based on dates
+        var headings = "<tr>" + colStart + "Location" + colEnd;
+        var scope = this;
+        var headersRendered = false;
+
+        var tableBody = "";
         this.state.beaconsAndAvailability.forEach(function (beacon) {
-            var row = "<tr id='" + beacon.beaconId + "'>" + colStart + beacon.location + colEnd;
+            var row = "<tr id='" + beacon.beaconId + "'>" + colStart + beacon.beaconLocation + colEnd;
 
             // Now render availability
+            beacon.timeslots.forEach(function (timeslot) {
+                if (!headersRendered) {
+                    headings = headings + colStart + scope.formatDateAsDay(timeslot.start) + colEnd;
+                }
 
+                // Is there any bookings for this timeslot?
+                var col = "<td data-beacon='" + beacon.beaconId + "' data-selectable data-timeslot-start='" + timeslot.start + "' data-timeslot-end='" + timeslot.end + "' class='";
+                var colContents = "";
+                if (timeslot.bookings > 0) {
+                    col = col + "booked'>";
+                    timeslot.bookings.forEach(function (booking) {
+                        colContents = colContents + booking.ContentTitle;
+                    });
+                }
+                else {
+                    col = col + "unbooked'>";
+                }
+
+                row = row + col + colContents + colEnd;
+            });
+
+            headersRendered = true;
 
             // End row
             row = row + rowEnd;
 
             // Add row to table
-            tableString = tableString + row;
+            tableBody = tableBody + row;
         });
 
         // End table string
-        tableString = tableString + tableEnd;
+        tableString = tableString + headings + tableBody + tableEnd;
 
         // Set table
         var table = document.getElementById('scheduler');
         table.innerHTML = tableString;
+    }
+
+    selectCell(event) {
+        var element = event.target;
+
+        // Proceed only if element is selectable
+        if (element.dataset.selectable != undefined) {
+            if (element.className === "booked") {
+                element.className = "unbooked";
+            }
+            else {
+                // Add all these to state
+                element.className = "booked";
+            }
+        }
+    }
+
+    formatDateAsDay(date) {
+        var m = new Date(date);
+        return m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate()
     }
 
     incrementLoadingState() {
@@ -178,6 +224,8 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         }
     }
 
+    navigateTo
+
     cancelClicked(event) {
         ReactDOM.render(
             <MuiThemeProvider>
@@ -207,43 +255,43 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                     <h2>Schedule a Message</h2>
                 </div>
                 <div>
-                    <Grid container gutter={24}>
-                        <Grid item xs={12}>
-                            <Paper className="Paper">
-                                <div id="loading">
-                                    Loading form...
+                    <div id="loading">
+                        Loading form...
                                 </div>
-                                <div id="mask" className="hidden">
-                                    <div id="schedulerForm" className="contentSchedulerForm">
-                                        <div id="selectContent" className="searchContentPane">
-                                            <div className="contentSearchContainer">
-                                                <Input
-                                                    placeholder="Search for messages..."
-                                                    value={this.state.contentSearchText}
-                                                    onChange={this.contentSearchTextChanged}
-                                                    style={{ width: '100%' }} />
-                                            </div>
-                                            <ul className="contentPreviewList">
-                                                {
-                                                    this.state.displayedContent.map(item => (
-                                                        <li id={item.id} className="contentPreviewBox" dense button key={item.id} onClick={event => this.selectContent(item.id)}>
-                                                            {item.title}
-                                                        </li>
-                                                    ))
-                                                }
-                                            </ul>
-                                        </div>
-                                        <div id="scheduler">
-                                        </div>
-                                    </div>
+                    <div id="mask" className="hidden">
+                        <div id="schedulerForm" className="contentSchedulerForm">
+                            <div id="selectContent" className="searchContentPane">
+                                <div className="contentSearchContainer">
+                                    <Input
+                                        placeholder="Filter messages..."
+                                        value={this.state.contentSearchText}
+                                        onChange={this.contentSearchTextChanged}
+                                        style={{ width: '100%' }} />
                                 </div>
-                                <div className="formBottomBar">
-                                    <Button raised primary={true}>Schedule</Button>
+                                <ul className="contentPreviewList">
+                                    {
+                                        this.state.displayedContent.map(item => (
+                                            <li id={item.id} className="contentPreviewBox" dense button key={item.id} onClick={event => this.selectContent(item.id)}>
+                                                {item.title}
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                                <div className="formNavigation">
+                                    <Button raised primary={true}>Next</Button>
                                     <Button raised onClick={this.cancelClicked}>Cancel</Button>
                                 </div>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                            </div>
+                            <div id="timespan" className="hidden">
+                            </div>
+                            <div id="scheduler" className="hidden" onClick={this.selectCell}>
+                            </div>
+                            <div id="submit" className="hidden">
+                                <Button raised primary={true}>Schedule</Button>
+                                <Button raised onClick={this.cancelClicked}>Cancel</Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

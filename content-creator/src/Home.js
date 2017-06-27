@@ -12,6 +12,7 @@ import FontAwesome from 'react-fontawesome';
 import ContentScheduler from './ContentScheduler.js';
 import ContentDesigner from './ContentDesigner.js';
 import AddBeaconComponent from './AddBeacon.js';
+import ContentSelectorComponent from './Components/ContentSelector.js';
 
 import BeaconImage from './img/generic-beacons.jpg';
 import NewBeaconImage from './img/new-beacons.jpg';
@@ -27,8 +28,8 @@ const HomeComponent = class HomeComponent extends React.Component {
         super(props);
         this.state = { value: '' };
         this.navigateToAddBeacon = this.navigateToAddBeacon.bind(this);
-        this.navigateToContentCreator = this.navigateToContentCreator.bind(this);
-        this.navigateToContentScheduler = this.navigateToContentScheduler.bind(this);
+        this.navigateToContentManager = this.navigateToContentManager.bind(this);
+        this.navigateToContentDesigner = this.navigateToContentDesigner.bind(this);
     }
 
     navigateToAddBeacon(event) {
@@ -39,7 +40,7 @@ const HomeComponent = class HomeComponent extends React.Component {
             document.getElementById('root'));
     }
 
-    navigateToContentCreator(event) {
+    navigateToContentDesigner(event) {
         ReactDOM.render(
             <MuiThemeProvider>
                 <ContentDesigner />
@@ -47,10 +48,10 @@ const HomeComponent = class HomeComponent extends React.Component {
             document.getElementById('root'));
     }
 
-    navigateToContentScheduler(event) {
+    navigateToContentManager(event) {
         ReactDOM.render(
             <MuiThemeProvider>
-                <ContentScheduler />
+                <ContentSelectorComponent />
             </MuiThemeProvider>,
             document.getElementById('root'));
     }
@@ -101,14 +102,14 @@ const HomeComponent = class HomeComponent extends React.Component {
                         </CardMedia>
                         <CardContent>
                             <Typography type="headline" component="h2">
-                                Design Content
+                                Create Messages
                             </Typography>
                             <Typography component="p">
-                                Design and publish content for marketing and communications. Choose which beacons to deploy to and book time slots.
+                                Design and publish messages for marketing and communications. 
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button compact primary onClick={this.navigateToContentCreator}>Design Content</Button>
+                            <Button compact primary onClick={this.navigateToContentDesigner}>Create Messages</Button>
                         </CardActions>
                     </Card>
                 </div>
@@ -119,14 +120,14 @@ const HomeComponent = class HomeComponent extends React.Component {
                         </CardMedia>
                         <CardContent>
                             <Typography type="headline" component="h2">
-                                Schedule Content
+                                Manage Messages
                             </Typography>
                             <Typography component="p">
-                                Booking tool to allocate content to beacons. Select already created content, choose a run time and then select an available beacon.
+                                View all messages stored by the system. Choose when and where messages should be broadcast, make changes to messages or delete them entirely.
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button compact primary onClick={this.navigateToContentScheduler}>Schedule Content</Button>
+                            <Button compact primary onClick={this.navigateToContentManager}>Manage Messages</Button>
                         </CardActions>
                     </Card>
                     <Card className="Tile">

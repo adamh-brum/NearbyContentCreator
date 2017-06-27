@@ -100,7 +100,6 @@
 }
 
 .searchContentPane {
-  max-width: 400px;
 }
 
 .contentPreviewList {
@@ -108,27 +107,20 @@
 }
 
 .contentSearchContainer{
-  margin: 10px;
+  padding: 0px 40px 0px 40px;
+}
+
+.contentPreviewBoxContainer {
+  padding-right: 40px;
 }
 
 .contentPreviewBox {
-  border: solid 2px grey;
-  border-radius: 5px;
-  padding: 10px;
-  margin-left: -30px;
-  margin-right: 10px;
-  margin-bottom: 5px;
+  margin: 5px;
+  padding: 5px;
 }
 
-.contentPreviewBox:hover{
-  border-radius: 5px;
-  border: solid 2px green;
-  color: green;
-  cursor: pointer;
-}
-
-.beaconSelectionPane {
-
+.contentPreviewBoxActions{
+  float:right;
 }
 
 .formBottomBar{
@@ -148,7 +140,38 @@
 }
 
 .schedulerTable td{
-  padding: 10px
+  padding: 5px;
+  border: 2px solid white;
+}
+
+.schedulerTable {
+  max-width: 500px;
+  overflow-x: scroll;
+}
+
+.unbooked {
+  background-color: white;
+}
+
+.unbooked:hover{
+  border: 2px solid green;
+}
+
+.booked {
+  background-color: orange;
+}
+
+.formNavigation{
+  padding: 5px;
+}
+
+.formNavigation button{
+  margin: 5px;
+  float: right;
+}
+
+.page {
+  padding: 10px;
 }
 
 @keyframes App-logo-spin {
