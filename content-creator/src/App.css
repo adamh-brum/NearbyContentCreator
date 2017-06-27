@@ -142,11 +142,17 @@
 .schedulerTable td{
   padding: 5px;
   border: 2px solid white;
+  cursor: pointer;
 }
 
 .schedulerTable {
-  max-width: 500px;
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+}
+
+.schedulerTableContainer {
   overflow-x: scroll;
+  max-width: 500px;
 }
 
 .unbooked {
@@ -155,10 +161,37 @@
 
 .unbooked:hover{
   border: 2px solid green;
+  background-color: green;
 }
 
 .booked {
+  background-color: green;
+  border: 2px solid green;
+}
+
+.booked:hover {
+  background-color: white;
+  border: 2px solid white;
+}
+
+.clashed {
   background-color: orange;
+  border: 2px solid orange;
+}
+
+.clashed:hover{
+  background-color: green;
+  border: 2px solid orange;
+}
+
+.clashedBooking{
+  background-color: green;
+  border: 2px solid orange;
+}
+
+.clashedBooking:hover {
+  background-color: orange;
+  border: 2px solid orange;
 }
 
 .formNavigation{
@@ -172,6 +205,18 @@
 
 .page {
   padding: 10px;
+}
+
+.form{
+  padding: 0px 40px 0px 40px;
+}
+
+form button {
+  padding-right: 5px;
+}
+
+.navigationBar{
+
 }
 
 @keyframes App-logo-spin {

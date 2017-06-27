@@ -17,7 +17,9 @@ import DateRangeIcon from 'material-ui-icons/DateRange';
 import Typography from 'material-ui/Typography';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import HomeComponent from '../Home.js'
+import HomeComponent from '../Home.js';
+import ContentSchedulerComponent from './ContentScheduler.js';
+import NavigationBarComponent from './NavigationBar.js';
 
 const ContentSelectorComponent = class ContentSelectorComponent extends React.Component {
     constructor(props) {
@@ -27,8 +29,18 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
         this.contentSearchTextChanged = this.contentSearchTextChanged.bind(this);
         this.displayListItem = this.displayListItem.bind(this);
         this.cancelClicked = this.cancelClicked.bind(this);
+        this.navigateToContentScheduler = this.navigateToContentScheduler.bind(this);
 
         this.getContent();
+    }
+
+    navigateToContentScheduler(event) {
+        var buttonData = event.currentTarget.dataset;
+        ReactDOM.render(
+            <MuiThemeProvider>
+                <ContentSchedulerComponent contentId={buttonData.contentid} contentName={buttonData.contenttitle} />
+            </MuiThemeProvider>,
+            document.getElementById('root'));
     }
 
     getContent() {
@@ -40,7 +52,7 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
         });
     }
 
-    displayListItem(listItem){
+    displayListItem(listItem) {
         if (listItem.className.indexOf("hidden") > -1) {
             // reveal
             listItem.className = "contentPreviewBoxContainer";
@@ -87,6 +99,7 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
                     <img src={logo} className="App-logo" alt="logo" />
                     <h2>Manage Messages</h2>
                 </div>
+                <NavigationBarComponent backEvent={this.cancelClicked}/>
                 <div>
                     <div id="schedulerForm" className="contentSchedulerForm page">
                         <div id="selectContent" className="searchContentPane">
@@ -104,8 +117,8 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
                                             <Paper>
                                                 <div className="contentPreviewBox">
                                                     <div className="contentPreviewBoxActions">
-                                                        <IconButton aria-label="Schedule">
-                                                            <DateRangeIcon/>
+                                                        <IconButton data-contentid={item.id} data-contenttitle={item.title} onClick={this.navigateToContentScheduler} aria-label="Schedule">
+                                                            <DateRangeIcon />
                                                         </IconButton>
                                                         <IconButton aria-label="Edit">
                                                             <EditIcon />
