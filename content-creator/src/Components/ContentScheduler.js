@@ -26,6 +26,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         super(props);
         this.state = { contentId: props.contentId, contentName: props.contentName, beaconsAndAvailability: [] }
 
+        this.saveClicked = this.saveClicked.bind(this);
 
         this.getBeacons();
     }
@@ -150,7 +151,20 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
     saveClicked(event) {
         // Display confirmation
         var table = document.getElementById('scheduler');
-
+        var cells = table.getElementsByTagName("td");
+        var selectedCells = [];
+        var currentState = this.state;
+        for (var i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            if (cell.className.indexOf("selected") > -1 || cell.className.indexOf("booked") > -1) {
+                selectedCells.push({
+                    contentId: currentState.contentId,
+                    beaconId: cell.dataset.beacon,
+                    start: cell.dataset.timeslotStart,
+                    end: cell.dataset.timeslotEnd
+                });
+            }
+        }
     }
 
     render() {
