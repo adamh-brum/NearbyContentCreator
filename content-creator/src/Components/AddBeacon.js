@@ -69,23 +69,22 @@ const AddBeaconComponent = class AddBeacon extends React.Component {
         // Todo validate (All fields mandatory)
         event.preventDefault();
 
-        var data = { "Id": this.state.uuid, "Name": this.state.beaconId, "FriendlyName": this.state.friendlyName, "Location": this.state.location, "Minor": this.state.minor, "Major": this.state.major };
-
-        var axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Data-Type': 'json'
-            }
-        };
-
         axios.post(
             "http://localhost:5000/api/Beacon", {
-                id: this.state.uuid,
-                name: this.state.beaconId,
+                uuid: this.state.uuid,
+                beaconId: this.state.beaconId,
+                minorVersion: this.state.minor,
+                majorVersion: this.state.major,
                 friendlyName: this.state.friendlyName,
                 location: this.state.location
             })
             .then(res => {
+                if (res.data.statusCode === 1) {
+                    alert("Save was successful. You may now return to home by pressing cancel.");
+                }
+                else {
+                    alert("Save failed");
+                }
             });
     }
 
@@ -99,7 +98,7 @@ const AddBeaconComponent = class AddBeacon extends React.Component {
                         <Grid item xs={12}>
                             <Paper className="Paper">
                                 <form id="addBeaconForm" onSubmit={this.handleSubmit} className="Form">
-                                    <br/>
+                                    <br />
                                     <div className="Paper">
                                         <p>To add a beacon to the system, use the below form. The details you need to enter are simple but crucial. Get these wrong and messages will not be delivered to these beacons!</p>
                                         <p>To ensure you collect this information accurately, follow manufacturer instructions. The manufacturer will normally provide an app which reads beacon details. Read the values from that app which correspond to the values required below </p>

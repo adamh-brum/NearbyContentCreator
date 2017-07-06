@@ -33,8 +33,7 @@ const TabContainer = props => (
 class ContentDesigner extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { index: 0, notification: '', beacons: [], checked: [0] };
-    this.getBeacons();
+    this.state = { index: 0, notification: '', content: '' };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cancelClicked = this.cancelClicked.bind(this);
@@ -42,27 +41,11 @@ class ContentDesigner extends React.Component {
     this.onContentChanged = this.onContentChanged.bind(this);
   }
 
-  onContentChanged(editorState) {
-    // Nothing
+  onContentChanged(event) {
+    this.setState({ content: event.target.value });
   }
 
-  getBeacons() {
-    var url = "http://localhost:5000/api/Beacon";
-    axios.get(url).then(res => {
-      res.data.forEach(function (element) {
-        var newArray = this.state.beacons.slice();
-        newArray.push({ beacon: element, checked: false });
-        this.setState({ beacons: newArray })
-      }, this);
-
-      // Will leave this commented in case I ever need it again
-      /*this.state.beacons.forEach(function (element) {
-        alert(element.beacon.id);
-      }, this);*/
-    })
-  }
-
-  handleChange = (event, index) => {
+  handleTabChanged = (event, index) => {
     this.setState({ index });
   };
 
@@ -82,36 +65,16 @@ class ContentDesigner extends React.Component {
     // Todo validate (All fields mandatory)
     event.preventDefault();
 
-    var locationIds = [];
-    this.state.beacons.forEach(function (element) {
-      if (element.checked) {
-        locationIds.push(element.beacon.id);
-      }
-    }, this);
-
     // Submit to API
     axios.post("http://localhost:5000/api/Content", { title: this.state.notification, content: this.state.content }).then(res => {
-      //const posts = res.data.data.children.map(obj => obj.data);
-      //this.setState({ posts });
-      alert('Submitted to API');
+      if (res.data.statusCode === 1) {
+        alert("Save was successful. You may now return to home by pressing cancel.");
+      }
+      else {
+        alert("Save failed");
+      }
     });
   }
-
-  handleToggle = (event, value) => {
-    this.state.beacons.forEach(function (element) {
-      if (element.beacon.id == value) {
-        element.checked = !element.checked
-      }
-    }, this);
-  };
-
-  checked(value) {
-    this.state.beacons.forEach(function (element) {
-      if (element.beacon.id == value) {
-        return element.checked;
-      }
-    }, this);
-  };
 
   render() {
     return (
@@ -122,7 +85,7 @@ class ContentDesigner extends React.Component {
         <Paper className="Paper">
           <form id="createContentForm" onSubmit={this.handleSubmit} className="Form">
             <div>
-              <Tabs index={this.state.index} onChange={this.handleChange}>
+              <Tabs index={this.state.index} onChange={this.handleTabChanged}>
                 <Tab label="Notification" />
                 <Tab label="Message" />
                 <Tab label="Save" />
@@ -149,6 +112,7 @@ class ContentDesigner extends React.Component {
                   <div onClick={this.focus}>
                     <textarea
                       className="HtmlEditor"
+                      value={this.state.content}
                       onChange={this.onContentChanged} />
                   </div>
                 </div>

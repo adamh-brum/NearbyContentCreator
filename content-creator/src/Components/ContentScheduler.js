@@ -69,11 +69,17 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                     // Is there any bookings for this timeslot?
                     var col = "<td data-beacon='" + beacon.beaconId + "' data-selectable data-timeslot-start='" + timeslot.start + "' data-timeslot-end='" + timeslot.end + "' class='";
                     var colContents = "";
-                    if (timeslot.bookings > 0) {
-                        col = col + "clashed'>";
+                    if (timeslot.bookings != "undefined" && timeslot.bookings.length > 0) {
+                        var booked = false;
                         timeslot.bookings.forEach(function (booking) {
-                            colContents = colContents + booking.ContentTitle;
-                        });
+                            if (booking.contentId.toString() == scope.state.contentId) {
+                                booked = true;
+                            }
+                        })
+
+                        if (booked) {
+                            col = col + "booked'>"; 
+                        }
                     }
                     else {
                         col = col + "unbooked'>";
@@ -161,10 +167,10 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
             // get all booked cells (do not get any clashed cells as they are already saved)
             if (cell.className.indexOf("booked") === 0) {
                 selectedCells.push({
-                    ContentId: currentState.contentId,
-                    BeaconId: cell.dataset.beacon,
-                    Start: cell.dataset.timeslotStart,
-                    End: cell.dataset.timeslotEnd
+                    contentId: currentState.contentId,
+                    beaconId: cell.dataset.beacon,
+                    start: cell.dataset.timeslotStart,
+                    end: cell.dataset.timeslotEnd
                 });
             }
         }
@@ -173,7 +179,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         console.log(JSON.stringify(selectedCells));
 
         var url = "http://localhost:5000/api/Schedule";
-        axios.put(url, { bookings: { Bookings: selectedCells } }).then(res => {
+        axios.put(url, { bookings: selectedCells }).then(res => {
             if (res.data.statusCode === 1) {
                 alert("Save was successful. You may now return to home by pressing cancel.");
             }
