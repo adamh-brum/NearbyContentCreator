@@ -22,8 +22,8 @@
 }
 
 .HtmlEditor {
-  min-width: 500px;
-  min-height: 600px;
+  min-width: 300px;
+  min-height: 400px;
 }
 
 .App-header {
@@ -56,13 +56,12 @@
 
 .designer-left{
   float: left;
-  padding-left: 60px;
   min-width: 360px;
-  min-height: 700px;
+  min-height: 500px;
 }
 
 .designer-right{
-  min-height: 560px;
+  min-height: 500px;
 }
 
 .red {
@@ -143,6 +142,11 @@
   padding: 5px;
   border: 2px solid white;
   cursor: pointer;
+}
+
+.homeBody{
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .schedulerTable {

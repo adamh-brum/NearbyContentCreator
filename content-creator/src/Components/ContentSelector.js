@@ -17,9 +17,11 @@ import DateRangeIcon from 'material-ui-icons/DateRange';
 import Typography from 'material-ui/Typography';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import Header from './Helpers/Header.js'
 import HomeComponent from '../Home.js';
+import StickyFooter from './Helpers/StickyFooter.js'
 import ContentSchedulerComponent from './ContentScheduler.js';
-import NavigationBarComponent from './NavigationBar.js';
+import NavigationBarComponent from './Helpers/NavigationBar.js';
 
 const ContentSelectorComponent = class ContentSelectorComponent extends React.Component {
     constructor(props) {
@@ -95,11 +97,8 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
     render() {
         return (
             <div id="scheduleContent">
-                <div className="App App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h2>Manage Messages</h2>
-                </div>
-                <NavigationBarComponent backEvent={this.cancelClicked}/>
+                <Header subtitle="Manage Message" />
+                <NavigationBarComponent backEvent={this.cancelClicked} />
                 <div>
                     <div id="schedulerForm" className="contentSchedulerForm page">
                         <div id="selectContent" className="searchContentPane">
@@ -137,6 +136,7 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
                         </div>
                     </div>
                 </div>
+                <StickyFooter />
             </div>
         );
     }

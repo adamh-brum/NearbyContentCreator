@@ -18,7 +18,9 @@ import DateRangeIcon from 'material-ui-icons/DateRange';
 import Typography from 'material-ui/Typography';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import NavigationBarComponent from './NavigationBar.js';
+import Header from './Helpers/Header.js'
+import StickyFooter from './Helpers/StickyFooter.js'
+import NavigationBarComponent from './Helpers/NavigationBar.js';
 import ContentSelector from './ContentSelector.js'
 
 const ContentSchedulerComponent = class ContentScheduler extends React.Component {
@@ -156,24 +158,35 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         var currentState = this.state;
         for (var i = 0; i < cells.length; i++) {
             var cell = cells[i];
-            if (cell.className.indexOf("selected") > -1 || cell.className.indexOf("booked") > -1) {
+            // get all booked cells (do not get any clashed cells as they are already saved)
+            if (cell.className.indexOf("booked") === 0) {
                 selectedCells.push({
-                    contentId: currentState.contentId,
-                    beaconId: cell.dataset.beacon,
-                    start: cell.dataset.timeslotStart,
-                    end: cell.dataset.timeslotEnd
+                    ContentId: currentState.contentId,
+                    BeaconId: cell.dataset.beacon,
+                    Start: cell.dataset.timeslotStart,
+                    End: cell.dataset.timeslotEnd
                 });
             }
         }
+
+        console.log("Ready to submit selected beacon timeslots to the API");
+        console.log(JSON.stringify(selectedCells));
+
+        var url = "http://localhost:5000/api/Schedule";
+        axios.put(url, { bookings: { Bookings: selectedCells } }).then(res => {
+            if (res.data.statusCode === 1) {
+                alert("Save was successful. You may now return to home by pressing cancel.");
+            }
+            else {
+                alert("Save failed");
+            }
+        });
     }
 
     render() {
         return (
             <div id="scheduleContent">
-                <div className="App App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h2>Schedule Message</h2>
-                </div>
+                <Header subtitle="Schedule Message" />
                 <NavigationBarComponent backEvent={this.cancelClicked} />
                 <div className='page'>
                     <div className='form'>
@@ -187,6 +200,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                         <Button raised secondary={true} onClick={this.cancelClicked}>Cancel</Button>
                     </div>
                 </div>
+                <StickyFooter />
             </div>
         );
     }
