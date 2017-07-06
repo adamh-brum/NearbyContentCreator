@@ -70,7 +70,7 @@ const AddBeaconComponent = class AddBeacon extends React.Component {
         event.preventDefault();
 
         axios.post(
-            "http://localhost:5000/api/Beacon", {
+            "http://nearbycontentapi.azurewebsites.net/api/Beacon", {
                 uuid: this.state.uuid,
                 beaconId: this.state.beaconId,
                 minorVersion: this.state.minor,

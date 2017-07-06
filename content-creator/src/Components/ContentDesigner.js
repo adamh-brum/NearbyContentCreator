@@ -66,7 +66,7 @@ class ContentDesigner extends React.Component {
     event.preventDefault();
 
     // Submit to API
-    axios.post("http://localhost:5000/api/Content", { title: this.state.notification, content: this.state.content }).then(res => {
+    axios.post("http://nearbycontentapi.azurewebsites.net/api/Content", { title: this.state.notification, content: this.state.content }).then(res => {
       if (res.data.statusCode === 1) {
         alert("Save was successful. You may now return to home by pressing cancel.");
       }

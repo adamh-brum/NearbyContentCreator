@@ -114,7 +114,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
     getBeacons() {
         console.log('requesting beacons');
         var currentState = this.state;
-        axios.get("http://localhost:5000/api/Schedule").then(res => {
+        axios.get("http://nearbycontentapi.azurewebsites.net/api/Schedule").then(res => {
             console.log('beacons recieved');
             this.setState({ beaconsAndAvailability: res.data, bookingHintClass: "" });
 
@@ -178,7 +178,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         console.log("Ready to submit selected beacon timeslots to the API");
         console.log(JSON.stringify(selectedCells));
 
-        var url = "http://localhost:5000/api/Schedule";
+        var url = "http://nearbycontentapi.azurewebsites.net/api/Schedule";
         axios.put(url, { bookings: selectedCells }).then(res => {
             if (res.data.statusCode === 1) {
                 alert("Save was successful. You may now return to home by pressing cancel.");
