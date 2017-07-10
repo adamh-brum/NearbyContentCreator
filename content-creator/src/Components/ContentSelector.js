@@ -7,6 +7,7 @@ import '../font-awesome-4.7.0/css/font-awesome.min.css'
 import FontAwesome from 'react-fontawesome';
 import axios from 'axios';
 
+import Chip from 'material-ui/Chip';
 import Input from 'material-ui/Input/Input';
 import Icon from 'material-ui/Icon';
 import Paper from 'material-ui/Paper';
@@ -112,8 +113,16 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
                             <ul className="contentPreviewList">
                                 {
                                     this.state.content.map(item => (
-                                        <li id={item.id} className="contentPreviewBoxContainer" dense button key={item.id} data-searchable={item.title}>
+                                        <li id={item.id} className="contentPreviewBoxContainer" dense button key={item.id} data-searchable={item.title + item.tags}>
                                             <Paper>
+                                                {
+                                                    item.tags.map(tag => (
+                                                        <Chip
+                                                            className="modern-chip"
+                                                            label={tag}
+                                                        />
+                                                    ))
+                                                }
                                                 <div className="contentPreviewBox">
                                                     <div className="contentPreviewBoxActions">
                                                         <IconButton data-contentid={item.id} data-contenttitle={item.title} onClick={this.navigateToContentScheduler} aria-label="Schedule">

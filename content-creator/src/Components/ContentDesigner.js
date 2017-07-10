@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Button from 'material-ui/Button';
@@ -13,6 +14,7 @@ import Grid from 'material-ui/Grid';
 import Input from 'material-ui/Input/Input';
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
+import AddIcon from 'material-ui-icons/Add';
 
 import Header from './Helpers/Header.js'
 import NavigationBar from './Helpers/NavigationBar.js'
@@ -33,12 +35,37 @@ const TabContainer = props => (
 class ContentDesigner extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { index: 0, notification: '', content: '' };
+    this.state = { index: 0, notification: '', content: '', tags: [], tag: "" };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cancelClicked = this.cancelClicked.bind(this);
     this.notificationTextChanged = this.notificationTextChanged.bind(this);
     this.onContentChanged = this.onContentChanged.bind(this);
+    this.tagChanged = this.tagChanged.bind(this);
+    this.handleRequestDelete = this.handleRequestDelete.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
+  }
+
+  handleAddTag(event) {
+    // Supress default event
+    event.preventDefault();
+
+    this.state.tags.push(this.state.tag);
+    this.setState({ tags: this.state.tags });
+  }
+
+  handleRequestDelete = data => () => {
+    // Supress default event
+    var index = this.state.tags.indexOf(data);
+    if (index > -1) {
+      this.state.tags.splice(index, 1);
+    }
+
+    this.setState({ tags: this.state.tags });
+  };
+
+  tagChanged(event) {
+    this.setState({ tag: event.target.value });
   }
 
   onContentChanged(event) {
@@ -66,7 +93,7 @@ class ContentDesigner extends React.Component {
     event.preventDefault();
 
     // Submit to API
-    axios.post("http://nearbycontentapi.azurewebsites.net/api/Content", { title: this.state.notification, content: this.state.content }).then(res => {
+    axios.post("http://nearbycontentapi.azurewebsites.net/api/Content", { title: this.state.notification, content: this.state.content, tags: this.state.tags }).then(res => {
       if (res.data.statusCode === 1) {
         alert("Save was successful. You may now return to home by pressing cancel.");
       }
@@ -88,6 +115,7 @@ class ContentDesigner extends React.Component {
               <Tabs index={this.state.index} onChange={this.handleTabChanged}>
                 <Tab label="Notification" />
                 <Tab label="Message" />
+                <Tab label="Tag" />
                 <Tab label="Save" />
               </Tabs>
             </div>
@@ -124,11 +152,42 @@ class ContentDesigner extends React.Component {
                   <p>
                     You can fill it with whatever you want. Plaintext is fine, but if you have the know-how why not try using HTML and embedding CSS styles? This will spice up your message with colour and help grab peoples attention.
                   </p>
+                  <p>
+                    Feeling awesome? Try using <a href="http://fontawesome.io/icons/">Font Awesome Icons</a>
+                  </p>
                 </div>
               </TabContainer>
             }
             {
               this.state.index === 2 &&
+              <TabContainer>
+                <h3>Tag your Message</h3>
+                <h4>To make your message easier to find in future, add some tags</h4>
+                <ul>
+                  <li>Tags will be displayed on messages to help categorise them to yourself and users </li>
+                  <li>Users can unsubscribe from message types they are't interested in, ensuring they only see relevant content </li>
+                </ul>
+                <div id="tags">
+                  {
+                    this.state.tags.map(tag => (
+                      <Chip
+                        label={tag}
+                        onRequestDelete={this.handleRequestDelete(tag)}
+                      />
+                    ))
+                  }
+                </div>
+                <Input
+                  placeholder="Type to add a tag"
+                  value={this.state.tag}
+                  onChange={this.tagChanged} />
+                <Button fab color="primary" onClick={this.handleAddTag}>
+                  <AddIcon />
+                </Button>
+              </TabContainer>
+            }
+            {
+              this.state.index === 3 &&
               <TabContainer>
                 <h3>Time to save</h3>
                 <h4>Before you save, make sure you have...</h4>

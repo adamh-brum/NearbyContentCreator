@@ -34,15 +34,15 @@ import './font-awesome-4.7.0/css/font-awesome.min.css'
 const HomeComponent = class HomeComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: '', warningOpen: false };
+
         this.navigateToAddBeacon = this.navigateToAddBeacon.bind(this);
         this.navigateToContentManager = this.navigateToContentManager.bind(this);
         this.navigateToContentDesigner = this.navigateToContentDesigner.bind(this);
         this.handleSystemWarningClose = this.handleSystemWarningClose.bind(this);
         this.shouldWarningBeDisplayed = this.shouldWarningBeDisplayed.bind(this);
 
-        // Determine whether to display warning
-        this.shouldWarningBeDisplayed();
+        var show = this.shouldWarningBeDisplayed();
+        this.state = { value: '', warningOpen: show };
     }
 
     shouldWarningBeDisplayed(){
@@ -62,8 +62,8 @@ const HomeComponent = class HomeComponent extends React.Component {
             show = true;
         }
 
-        this.setState({warningOpen: show});
         localStorage.setItem("WarningDate", date);
+        return show;
     }
 
     navigateToAddBeacon(event) {
@@ -99,7 +99,7 @@ const HomeComponent = class HomeComponent extends React.Component {
             <div id="home">
                 <Dialog open={this.state.warningOpen} onRequestClose={this.handleSystemWarningClose}>
                     <DialogTitle>
-                        {"Welcome to the Pre-Beta"}
+                        {"Welcome to the Alpha Release"}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
