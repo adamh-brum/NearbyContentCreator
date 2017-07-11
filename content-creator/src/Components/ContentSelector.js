@@ -51,7 +51,16 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
         var currentState = this.state;
         axios.get("http://nearbycontentapi.azurewebsites.net/api/Content/All").then(res => {
             console.log('content recieved');
-            this.setState({ content: res.data });
+            var data = [];
+            res.data.forEach(function(element) {
+                data.push({
+                    id: element.id,
+                    content: element.content,
+                    title: element.title,
+                    tags: element.tags ? element.tags : []
+                })    
+            }, this);
+            this.setState({ content: data });
         });
     }
 
