@@ -44,6 +44,45 @@ class ContentDesigner extends React.Component {
     this.tagChanged = this.tagChanged.bind(this);
     this.handleRequestDelete = this.handleRequestDelete.bind(this);
     this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleNext = this.handleNext.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    this.setButtonState = this.setButtonState.bind(this);
+  }
+
+  handleNext(event) {
+    var newIndex = this.state.index + 1;
+    this.setState({ index: newIndex });
+    this.setButtonState(newIndex);
+  }
+
+  handleBack(event) {
+    var newIndex = this.state.index - 1;
+    this.setState({ index: newIndex });
+    this.setButtonState(newIndex);
+  }
+
+  setButtonState(index) {
+    var saveButton = document.getElementById("saveButton");
+    var nextButton = document.getElementById("nextButton");
+    var backButton = document.getElementById("backButton");
+    switch (index) {
+      case 0:
+        saveButton.className = "hidden";
+        nextButton.className = "";
+        backButton.className = "hidden";
+        break;
+      case 1:
+      case 2:
+        saveButton.className = "hidden";
+        nextButton.className = "";
+        backButton.className = "";
+        break;
+      case 3:
+        saveButton.className = "";
+        nextButton.className = "hidden";
+        backButton.className = "";
+        break;
+    }
   }
 
   handleAddTag(event) {
@@ -74,6 +113,7 @@ class ContentDesigner extends React.Component {
 
   handleTabChanged = (event, index) => {
     this.setState({ index });
+    this.setButtonState(index);
   };
 
   notificationTextChanged(event) {
@@ -118,6 +158,17 @@ class ContentDesigner extends React.Component {
                 <Tab label="Tag" />
                 <Tab label="Save" />
               </Tabs>
+            </div>
+            <div className="buttons">
+              <div className="hidden" id="saveButton">
+                <Button raised primary={true} onClick={this.handleSubmit}>Add Content</Button>
+              </div>
+              <div id="nextButton" >
+                <Button raised onClick={this.handleNext}>Next</Button>
+              </div>
+              <div className="hidden" id="backButton" >
+                <Button raised onClick={this.handleBack}>Back</Button>
+              </div>
             </div>
             {
               this.state.index === 0 &&
@@ -181,7 +232,7 @@ class ContentDesigner extends React.Component {
                   placeholder="Type to add a tag"
                   value={this.state.tag}
                   onChange={this.tagChanged} />
-                <Button fab color="primary" onClick={this.handleAddTag}>
+                <Button className="iconButton" fab color="primary" onClick={this.handleAddTag}>
                   <AddIcon />
                 </Button>
               </TabContainer>
@@ -195,8 +246,6 @@ class ContentDesigner extends React.Component {
                   <li>Created an amazing and catchy notification. </li>
                   <li>Put together a snazzy message using your best HTML developer hat </li>
                 </ul>
-                <Button raised primary={true}>Add Content</Button>
-                <Button raised secondary={true} onClick={this.cancelClicked}>Cancel</Button>
               </TabContainer>
             }
           </form>

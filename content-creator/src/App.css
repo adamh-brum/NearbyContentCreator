@@ -16,6 +16,14 @@
   max-width: 350px;
 }
 
+.buttons {
+  width: 100%;
+}
+
+.buttons button {
+  float: right;
+}
+
 .TileMedia img {
     height: 200px; 
     width: auto; 
@@ -23,7 +31,7 @@
 
 .HtmlEditor {
   min-width: 300px;
-  min-height: 400px;
+  min-height: 200px;
 }
 
 .App-header {
@@ -51,17 +59,17 @@
 }
 
 .Paper {
-  margin: 10px;
+  margin: 10px 10px 10px 10px;
+  padding-bottom: 50px;
 }
 
 .designer-left{
   float: left;
   min-width: 360px;
-  min-height: 500px;
 }
 
 .designer-right{
-  min-height: 500px;
+  min-height: 200px;
 }
 
 .red {
@@ -221,6 +229,11 @@ form button {
 
 .navigationBar{
 
+}
+
+.iconButton {
+  max-height: 20;
+  max-width: 20;
 }
 
 .modern-chip{

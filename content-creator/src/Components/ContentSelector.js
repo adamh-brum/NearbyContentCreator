@@ -46,19 +46,30 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
             document.getElementById('root'));
     }
 
+    handleDelete(id) {
+        axios.delete("http://nearbycontentapi.azurewebsites.net/api/Content?id=" + id).then(res => {
+            if (res.data.statusCode === 1) {
+                alert("Deleted.");
+            }
+            else {
+                alert("Delete failed");
+            }
+        });
+    }
+
     getContent() {
         console.log('requesting content');
         var currentState = this.state;
         axios.get("http://nearbycontentapi.azurewebsites.net/api/Content/All").then(res => {
             console.log('content recieved');
             var data = [];
-            res.data.forEach(function(element) {
+            res.data.forEach(function (element) {
                 data.push({
                     id: element.id,
                     content: element.content,
                     title: element.title,
                     tags: element.tags ? element.tags : []
-                })    
+                })
             }, this);
             this.setState({ content: data });
         });
