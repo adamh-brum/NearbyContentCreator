@@ -193,42 +193,6 @@ const HomeComponent = class HomeComponent extends React.Component {
                         </Card>
                         <Card className="Tile">
                             <CardMedia className="TileMedia">
-                                <img src={MarketingCampaignImage} alt="Marketing Campaign Image" />
-                            </CardMedia>
-                            <CardContent>
-                                <Typography type="headline" component="h2">
-                                    Create Campaign
-                            </Typography>
-                                <Typography component="p">
-                                    Create a campaign to automatically run multiple pieces of content across the beacon network at chosen times.
-                            </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button compact disabled primary onClick={this.navigateToContentCreator}>Create Campaign</Button>
-                            </CardActions>
-                        </Card>
-                        <Card className="Tile">
-                            <CardMedia className="TileMedia">
-                                <img src={MarketingCampaignImage} alt="Marketing Campaign Image" />
-                            </CardMedia>
-                            <CardContent>
-                                <Typography type="headline" component="h2">
-                                    View Campaigns
-                            </Typography>
-                                <Typography component="p">
-                                    View completed and in-flight campaigns. Run reports to analyse campaign impact. This feature allows you to make changes to in-flight campaigns.
-                            </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button compact disabled primary onClick={this.navigateToContentCreator}>View Campaign</Button>
-                            </CardActions>
-                        </Card>
-                    </div>
-                    <h3>In the pipeline....</h3>
-                    <p>There are even more great features on the way! These are a little further down the line, but it still won't be too long until you can play with them!</p>
-                    <div id="cardContainerRow3" className="TilesContainer">
-                        <Card className="Tile">
-                            <CardMedia className="TileMedia">
                                 <img src={EventImage} alt="Beacons" />
                             </CardMedia>
                             <CardContent>
@@ -259,6 +223,10 @@ const HomeComponent = class HomeComponent extends React.Component {
                                 <Button compact disabled primary onClick={this.navigateToContentCreator}>View Reports</Button>
                             </CardActions>
                         </Card>
+                    </div>
+                    <h3>In the pipeline....</h3>
+                    <p>There are even more great features on the way! These are a little further down the line, but it still won't be too long until you can play with them!</p>
+                    <div id="cardContainerRow3" className="TilesContainer">
                         <Card className="Tile">
                             <CardMedia className="TileMedia">
                                 <img src={MaintenanceImage} alt="Report Image" />
@@ -273,6 +241,38 @@ const HomeComponent = class HomeComponent extends React.Component {
                             </CardContent>
                             <CardActions>
                                 <Button compact disabled primary onClick={this.navigateToContentCreator}>Beacon Maintenance</Button>
+                            </CardActions>
+                        </Card>
+                        <Card className="Tile">
+                            <CardMedia className="TileMedia">
+                                <img src={MarketingCampaignImage} alt="Marketing Campaign Image" />
+                            </CardMedia>
+                            <CardContent>
+                                <Typography type="headline" component="h2">
+                                    Create Campaign
+                            </Typography>
+                                <Typography component="p">
+                                    Create a campaign to automatically run multiple pieces of content across the beacon network at chosen times.
+                            </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button compact disabled primary onClick={this.navigateToContentCreator}>Create Campaign</Button>
+                            </CardActions>
+                        </Card>
+                        <Card className="Tile">
+                            <CardMedia className="TileMedia">
+                                <img src={MarketingCampaignImage} alt="Marketing Campaign Image" />
+                            </CardMedia>
+                            <CardContent>
+                                <Typography type="headline" component="h2">
+                                    View Campaigns
+                            </Typography>
+                                <Typography component="p">
+                                    View completed and in-flight campaigns. Run reports to analyse campaign impact. This feature allows you to make changes to in-flight campaigns.
+                            </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button compact disabled primary onClick={this.navigateToContentCreator}>View Campaign</Button>
                             </CardActions>
                         </Card>
                     </div>

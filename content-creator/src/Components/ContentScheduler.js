@@ -7,6 +7,7 @@ import '../font-awesome-4.7.0/css/font-awesome.min.css'
 import FontAwesome from 'react-fontawesome';
 import axios from 'axios';
 
+import Menu, { MenuItem } from 'material-ui/Menu';
 import Input from 'material-ui/Input/Input';
 import Icon from 'material-ui/Icon';
 import Paper from 'material-ui/Paper';
@@ -26,85 +27,29 @@ import ContentSelector from './ContentSelector.js'
 const ContentSchedulerComponent = class ContentScheduler extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { contentId: props.contentId, contentName: props.contentName, beaconsAndAvailability: [] }
+        this.state = { menuOpen: false, selectedIndex: 0, contentId: props.contentId, contentName: props.contentName, beaconsAndAvailability: [ { timeslots: []} ], bookingOptions: ['Weekly', 'Daily', 'Hourly'] };
 
         this.saveClicked = this.saveClicked.bind(this);
+        this.getClass = this.getClass.bind(this);
+        this.handleClickListItem = this.handleClickListItem.bind(this);
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+        this.formatDateAsDay = this.formatDateAsDay.bind(this);
 
         this.getBeacons();
     }
 
-    loadScheduler() {
-        var tableStart = "<table class='schedulerTable'>";
-        var tableEnd = "</table>";
-        var rowStart = "<tr>";
-        var rowEnd = "</tr>";
-        var colStart = "<td>";
-        var colEnd = "</td>";
+    handleClickListItem = event => {
+        this.setState({ menuOpen: true });
+    };
 
-        var tableString = tableStart;
+    handleMenuItemClick = (event, index) => {
+        this.setState({ selectedIndex: index, open: false });
+    };
 
-        // add headings based on dates
-        var headings = "<tr>" + colStart + "" + colEnd;
-        var scope = this;
-        var headersRendered = false;
-
-        var tableBody = "";
-        this.state.beaconsAndAvailability.forEach(function (beacon) {
-            var row = "<tr id='" + beacon.beaconId + "'>" + colStart + beacon.beaconLocation + colEnd;
-
-            // Calculate number of columns to display
-            var width = window.innerWidth;
-            var numberOfColumnsRaw = width / 90; // Each column needs approx 90px
-            var cols = Math.round(numberOfColumnsRaw);
-
-            // Render table
-            beacon.timeslots.forEach(function (timeslot, index) {
-
-                // Keep rendering columns up to the limit that can be viewed on screen
-                if (index < cols) {
-                    if (!headersRendered) {
-                        headings = headings + colStart + scope.formatDateAsDay(timeslot.start) + colEnd;
-                    }
-
-                    // Is there any bookings for this timeslot?
-                    var col = "<td data-beacon='" + beacon.beaconId + "' data-selectable data-timeslot-start='" + timeslot.start + "' data-timeslot-end='" + timeslot.end + "' class='";
-                    var colContents = "";
-                    if (timeslot.bookings != "undefined" && timeslot.bookings.length > 0) {
-                        var booked = false;
-                        timeslot.bookings.forEach(function (booking) {
-                            if (booking.contentId.toString() == scope.state.contentId) {
-                                booked = true;
-                            }
-                        })
-
-                        if (booked) {
-                            col = col + "booked'>"; 
-                        }
-                    }
-                    else {
-                        col = col + "unbooked'>";
-                    }
-
-                    row = row + col + colContents + colEnd;
-                }
-            });
-
-            headersRendered = true;
-
-            // End row
-            row = row + rowEnd;
-
-            // Add row to table
-            tableBody = tableBody + row;
-        });
-
-        // End table string
-        tableString = tableString + headings + tableBody + tableEnd;
-
-        // Set table
-        var table = document.getElementById('scheduler');
-        table.innerHTML = tableString;
-    }
+    handleRequestClose = () => {
+        this.setState({ menuOpen: false });
+    };
 
     formatDateAsDay(date) {
         var m = new Date(date);
@@ -117,9 +62,6 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         axios.get("http://nearbycontentapi.azurewebsites.net/api/Schedule").then(res => {
             console.log('beacons recieved');
             this.setState({ beaconsAndAvailability: res.data, bookingHintClass: "" });
-
-            // Now the beacons have joined the party we can load the scheduler
-            this.loadScheduler();
         });
     }
 
@@ -189,6 +131,18 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
         });
     }
 
+    getClass(timeslot) {
+        var scope = this;
+        var className = null;
+        timeslot.bookings.forEach(function (booking) {
+            if (booking.contentId.toString() == scope.state.contentId) {
+                className = "booked";
+            }
+        })
+
+        return className;
+    }
+
     render() {
         return (
             <div id="scheduleContent">
@@ -197,13 +151,59 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                 <div className='page'>
                     <div className='form'>
                         <h3>Choose locations and times to broadcast your message: {this.state.contentName}</h3>
-                        <p>Use the table below to select slots you want the message to be broadcast. Simply click one or many dates and times and then click save.</p>
+                        <p>You can make bookings for by selecting timeslots on the table below. Simply click the cell that corresponds to the location and time you want to book</p>
+                        <p>By default, a booking is a week long, you can reduce this down to days or hours if you prefer</p>
+                        <Menu
+                            id="booking-menu"
+                            open={this.state.menuOpen}
+                            onRequestClose={this.handleRequestClose}>
+                            {
+                                this.state.bookingOptions.map((option, index) =>
+                                    <MenuItem
+                                        key={option}
+                                        selected={index === this.state.selectedIndex}
+                                        onClick={event => this.handleMenuItemClick(event, index)}>
+                                        {option}
+                                    </MenuItem>
+                                )}
+                        </Menu>
                         <div id="scheduler" onClick={this.selectCell}>
+                            {
+                                <table className='schedulerTable'>
+                                    <tr id="header">
+                                        <td>Beacon Location</td>
+                                        {
+                                            this.state.beaconsAndAvailability[0].timeslots.map(timeslot => (
+                                                <td>{this.formatDateAsDay(timeslot.start)}</td>
+                                            ))
+                                        }
+                                    </tr>
+                                    {
+                                        this.state.beaconsAndAvailability.map(beacon => (
+                                            <tr id={beacon.beaconId}>
+                                                <td>
+                                                    {beacon.beaconLocation}
+                                                </td>
+                                                {
+                                                    beacon.timeslots.map(timeslot => (
+                                                        <td
+                                                            data-beacon={beacon.beaconId}
+                                                            data-selectable data-timeslot-start={timeslot.start}
+                                                            data-timeslot-end={timeslot.end}
+                                                            className={this.getClass(timeslot)}>
+                                                        </td>
+                                                    ))
+                                                }
+                                            </tr>
+                                        ))
+                                    }
+                                </table>
+                            }
                         </div>
                         <br />
                         <p>When you are happy with your bookings, click save</p>
                         <Button raised primary={true} onClick={this.saveClicked}>Save</Button>
-                        <Button raised secondary={true} onClick={this.cancelClicked}>Cancel</Button>
+                        <Button raised onClick={this.cancelClicked}>Cancel</Button>
                     </div>
                 </div>
                 <StickyFooter />
