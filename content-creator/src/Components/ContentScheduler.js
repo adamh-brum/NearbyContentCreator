@@ -133,7 +133,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
 
     getClass(timeslot) {
         var scope = this;
-        var className = null;
+        var className = "unbooked";
         timeslot.bookings.forEach(function (booking) {
             if (booking.contentId.toString() == scope.state.contentId) {
                 className = "booked";
@@ -152,7 +152,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                     <div className='form'>
                         <h3>Choose locations and times to broadcast your message: {this.state.contentName}</h3>
                         <p>You can make bookings for by selecting timeslots on the table below. Simply click the cell that corresponds to the location and time you want to book</p>
-                        <p>By default, a booking is a week long, you can reduce this down to days or hours if you prefer</p>
+                        {/* <p>By default, a booking is a week long, you can reduce this down to days or hours if you prefer</p>
                         <Menu
                             id="booking-menu"
                             open={this.state.menuOpen}
@@ -166,7 +166,7 @@ const ContentSchedulerComponent = class ContentScheduler extends React.Component
                                         {option}
                                     </MenuItem>
                                 )}
-                        </Menu>
+                        </Menu> */}
                         <div id="scheduler" onClick={this.selectCell}>
                             {
                                 <table className='schedulerTable'>
