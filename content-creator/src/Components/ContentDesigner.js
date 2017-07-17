@@ -161,10 +161,10 @@ class ContentDesigner extends React.Component {
             </div>
             <div className="buttons">
               <div className="hidden" id="saveButton">
-                <Button raised primary={true} onClick={this.handleSubmit}>Add Content</Button>
+                <Button raised color="primary" primary={true} onClick={this.handleSubmit}>Add Content</Button>
               </div>
               <div id="nextButton" >
-                <Button raised onClick={this.handleNext}>Next</Button>
+                <Button raised color="primary" onClick={this.handleNext}>Next</Button>
               </div>
               <div className="hidden" id="backButton" >
                 <Button raised onClick={this.handleBack}>Back</Button>

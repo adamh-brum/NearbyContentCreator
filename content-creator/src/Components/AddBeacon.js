@@ -67,8 +67,6 @@ const AddBeaconComponent = class AddBeacon extends React.Component {
 
     handleSubmit(event) {
         // Todo validate (All fields mandatory)
-        event.preventDefault();
-
         axios.post(
             "http://nearbycontentapi.azurewebsites.net/api/Beacon", {
                 uuid: this.state.uuid,
@@ -140,7 +138,7 @@ const AddBeaconComponent = class AddBeacon extends React.Component {
                                         placeholder="Location"
                                         fullWidth={true} />
                                     <br />
-                                    <Button raised primary={true}>Add Beacon</Button>
+                                    <Button color="primary" raised onClick={this.handleSubmit} primary={true}>Add Beacon</Button>
                                     <Button raised secondary={true} onClick={this.cancelClicked}>Cancel</Button>
                                 </form>
                             </Paper>
