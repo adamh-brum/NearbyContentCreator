@@ -163,11 +163,14 @@ const ContentSchedulerFormComponent = class ContentSchedulerForm extends React.C
         var bookings = [];
         var currentState = this.state;
         this.state.beaconBookings.forEach(function (booking) {
+            var start = booking.start.add('1', 'hours');
+            var end = booking.end.add('1', 'hours');
+
             bookings.push({
                 contentId: currentState.contentId,
                 beaconId: booking.beaconId,
-                start: booking.start.format('YYYY-MM-DDTHH:mm:SS+00:00'),
-                end: booking.end.format('YYYY-MM-DDTHH:mm+00:00')
+                start: start,
+                end: end,
             })
         }, this);
 
