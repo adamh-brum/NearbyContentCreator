@@ -22,6 +22,7 @@ import Header from './Helpers/Header.js'
 import HomeComponent from '../Home.js';
 import StickyFooter from './Helpers/StickyFooter.js'
 import ContentSchedulerComponent from './ContentScheduler.js';
+import ContentSchedulerFormComponent from './ContentSchedulerForm.js';
 import NavigationBarComponent from './Helpers/NavigationBar.js';
 
 const ContentSelectorComponent = class ContentSelectorComponent extends React.Component {
@@ -33,11 +34,13 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
         this.displayListItem = this.displayListItem.bind(this);
         this.cancelClicked = this.cancelClicked.bind(this);
         this.navigateToContentScheduler = this.navigateToContentScheduler.bind(this);
+        this.navigateToOldContentScheduler = this.navigateToOldContentScheduler.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         this.getContent();
     }
 
-    navigateToContentScheduler(event) {
+    navigateToOldContentScheduler(event){
         var buttonData = event.currentTarget.dataset;
         ReactDOM.render(
             <MuiThemeProvider>
@@ -46,10 +49,21 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
             document.getElementById('root'));
     }
 
+    navigateToContentScheduler(event) {
+        var buttonData = event.currentTarget.dataset;
+        ReactDOM.render(
+            <MuiThemeProvider>
+                <ContentSchedulerFormComponent contentId={buttonData.contentid} contentName={buttonData.contenttitle} />
+            </MuiThemeProvider>,
+            document.getElementById('root'));
+    }
+
     handleDelete(id) {
+        var scope = this;
         axios.delete("http://nearbycontentapi.azurewebsites.net/api/Content?id=" + id).then(res => {
             if (res.data.statusCode === 1) {
                 alert("Deleted.");
+                scope.getContent();
             }
             else {
                 alert("Delete failed");
@@ -148,10 +162,10 @@ const ContentSelectorComponent = class ContentSelectorComponent extends React.Co
                                                         <IconButton data-contentid={item.id} data-contenttitle={item.title} onClick={this.navigateToContentScheduler} aria-label="Schedule">
                                                             <DateRangeIcon />
                                                         </IconButton>
-                                                        <IconButton aria-label="Edit">
+                                                        <IconButton aria-label="Edit" data-contentid={item.id} data-contenttitle={item.title} onClick={this.navigateToOldContentScheduler} >
                                                             <EditIcon />
                                                         </IconButton>
-                                                        <IconButton aria-label="Delete">
+                                                        <IconButton aria-label="Delete" onClick={() => this.handleDelete(item.id)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>

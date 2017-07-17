@@ -54,8 +54,8 @@ const HomeComponent = class HomeComponent extends React.Component {
         
         var show = false;
 
-        // If they haven't seen a warning for 30 minutes, show it
-        var nextWarnTime = new Date(lastWarned.getTime() + 30*60000);
+        // If they haven't seen a warning for 15 minutes, show it
+        var nextWarnTime = new Date(lastWarned.getTime() + 15*60000);
         var now = new Date();
         if(now.getTime() > nextWarnTime){
             date = now;

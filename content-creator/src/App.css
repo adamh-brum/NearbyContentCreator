@@ -236,6 +236,25 @@ form button {
   margin: 5px;
 }
 
+.addBookingContainer {
+  padding: 10px 40px 10px 40px;
+}
+
+.addBookingForm {
+  padding: 10px;
+}
+
+.addBookingForm button {
+  padding-top: 10px;
+}
+
+.addBookingInput {
+  min-height: 40px;
+  min-width: 250px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
